@@ -3,6 +3,11 @@
 Some shit I wrote on a snowy sunday afternoon.
 Static fileserver with live refresh capabilities.
 
+## Installation
+```bash
+$ npm -g install pusherman
+```
+
 ## Usage
 First, include the script in your page
 ```html
@@ -18,7 +23,6 @@ First, include the script in your page
 Pusherman can be used as a static file server for authoring flat html like
 so:
 ```bash
-$ npm -g install pusherman
 $ cd /path/to/html/project
 $ pusherman
 ```
