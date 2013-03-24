@@ -1,0 +1,15 @@
+html, body { margin:0; padding:0; font-size:100%; } 
+
+body { background:#191919; color:#FFF; font:1.4em/2em 'Helvetica Neue', Helvetica, Arial, sans-serif normal normal; padding:2.5em; }
+
+h1, h2, h3, h4, img, hr, aside { border-color:#FFF; border-style:none; border-width:.125em; }
+
+aside { border-top-style:solid; float:left; margin-right:1em; }
+h1, h2, h3, h4 { border-bottom-style:solid; line-height:2em; }
+hr { border-bottom-style:solid; }
+img { padding:.25em; border-style:solid; }
+
+p.lead { position:relative; display:table; clear:both; padding:1em; z-index:1; }
+p.lead:before, p.lead:after { position:absolute; font-size:6em; color:#222; z-index:-1; }
+p.lead:before { content:open-quote; top: 0.2em; left: 0; }
+p.lead:after { content:close-quote; bottom: -0.2em; right: 0em; }
