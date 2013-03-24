@@ -22,11 +22,72 @@
   }
 
   function evt_filechange( ev ) {
-    var res = document.evaluate('//*[@*=\'\/images\/hiltowned.jpg\']', document, null, XPathResult.ANY_TYPE, null);
+    if( ev.mimeType === "text/html" ) {
+      return processHtml(ev);
+    }
+    
+    relatedElements(ev.file, function( el ){
+      switch(el.nodeName) {
+        case 'IMG':
+          refreshImage(el, ev.file);
+          break;
+        case 'LINK':
+          refreshStylesheet(el);
+          break;
+        default:
+          refreshGeneric(el);
+          break;
+      }
+    });
+  }
+
+  function processHtml( data ) {
+    var nPath = data.file.replace('index.html', '');
+
+    if(nPath === window.location.pathname) { 
+      window.location.reload();
+    }
+  }
+
+  function relatedElements( url, cb ) {
+    var res = document.evaluate('//*[@*=\'' + url + '\']', document, null, XPathResult.ANY_TYPE, null)
+      , iterFunc_r
+      , elements = [];
+
     var iter = null;
     while((iter = res.iterateNext()) !== null) {
-      console.log(iter)
+      elements.push(iter);
     }
+    
+    elements.forEach(function( el ) {
+      setTimeout(function() {
+        console.log(el)
+        cb(el); 
+      }, 0);
+    });
+  }
+
+  function refreshGeneric( el ) {
+    refreshStylesheet(el)
+  }
+
+  function refreshImage( el, src ) {
+    var img = new Image();
+    img.onload = function() {
+      el.src = null;
+      el.src = src;
+    }
+    img.src = el.src
+  }
+
+  function refreshStylesheet( el, waitTime ) {
+    var sib = el.nextSibling
+      , parent = el.parentNode;
+
+    parent.removeChild(el);
+    setTimeout(function() {
+      parent.insertBefore(el, sib);
+    }, waitTime || 0 );
   }
 
 }()

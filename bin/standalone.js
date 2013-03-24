@@ -2,13 +2,12 @@ var Pusherman = require('../')
   , path = require('path')
   , fs = require('fs')
   , express = require('express')
-  , gzippo = require('gzippo')
 
   , app
   , server
 
   , pusher
-  , clientBundle
+  , clientBundle = ''
   
   , cwd = process.cwd();
 
@@ -16,7 +15,7 @@ app = express();
 server = require('http').createServer(app);
 pusher = new Pusherman(server);
 
-!function( bundle ) {
+!function() {
   var engineioPath = require.resolve('engine.io-client').replace('index.js', '');
 
   fs.readFile(path.join(engineioPath, 'engine.io.js'), { encoding : 'UTF-8' }, function( err, file ) {
@@ -31,9 +30,10 @@ pusher = new Pusherman(server);
     });
   });
 
-}(clientBundle);
+}();
 
 app.configure(function() {
+  app.use(express.compress());
   app.use(app.router);
   app.use(function( req, res, next ) {
     var target = path.join(cwd, req.url);
@@ -58,8 +58,11 @@ app.configure(function() {
     });
   });
   app.use(express.directory(cwd, { icons : true }));
-  app.use(gzippo.staticGzip(path.join(cwd, '/')));
-  app.use(gzippo.compress());
+  app.use(function( req, res, next ) {
+    res.setHeader('Cache-Control', 'public, max-age=0');
+    next();
+  });
+  app.use(express.static(path.join(cwd, '/')));
   app.use(express.errorHandler());
 });
 
