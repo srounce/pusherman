@@ -1,7 +1,7 @@
 {
   "name": "pusherman",
-  "version": "0.1.0",
-  "description": "ERROR: No README.md file found!",
+  "version": "0.1.1",
+  "description": "A live-refresh static fileserver thingy",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
